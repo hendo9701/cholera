@@ -1,12 +1,199 @@
 package cholera.views
 
-import cholera.styles.Styles
+import cholera.controller.PatientController
+import cholera.model.Patient
+import cholera.model.PatientModel
+import javafx.application.Platform
+import javafx.beans.property.SimpleStringProperty
+import javafx.geometry.Orientation
 import tornadofx.*
 
-class MainView : View("Hello TornadoFX") {
-    override val root = hbox {
-        label(title) {
-            addClass(Styles.heading)
+class MainView : View("Cholera diagnosis") {
+
+    val controller: PatientController by inject()
+    val model: PatientModel = PatientModel(Patient())
+    val diagnosis = SimpleStringProperty()
+
+    override val root = form {
+        fieldset("Personal info:", labelPosition = Orientation.VERTICAL) {
+            field("Name") {
+                textfield(model.name) {
+                    promptText = "Enter patient name"
+                    validator {
+                        if (it.isNullOrBlank()) error("Name is required") else null
+                    }
+                }
+            }
+            field("Age") {
+                textfield(model.age) {
+                    promptText = "Enter patient age"
+                    filterInput { it.controlNewText.isInt() }
+                    validator { if (it.isNullOrBlank()) error("Age is required") else null }
+                }
+            }
+        }
+        fieldset("Symptoms:") {
+            gridpane {
+                field {
+                    checkbox(text = "Diarrhea", property = model.hasDiarrhea)
+                    gridpaneConstraints {
+                        columnRowIndex(0, 0)
+                        marginLeft = 5.0
+                        columnSpan = 1
+                    }
+                }
+                field {
+                    checkbox(text = "Rice water stools", property = model.hasRiceWaterStools)
+                    gridpaneConstraints {
+                        columnRowIndex(1, 0)
+                        marginLeft = 5.0
+                        columnSpan = 1
+                    }
+                }
+                field {
+                    checkbox(text = "Respiratory distress", property = model.hasRespiratoryDistress)
+                    gridpaneConstraints {
+                        columnRowIndex(2, 0)
+                        marginLeft = 5.0
+                        columnSpan = 1
+                    }
+                }
+//                field {
+//                    checkbox(text = "Abdominal pain", property = model.hasAbdominalPain)
+//                    gridpaneConstraints {
+//                        columnRowIndex(2, 0)
+//                        marginLeft = 5.0
+//                        columnSpan = 1
+//                    }
+//                }
+//                field {
+//                    checkbox(text = "Rectal pain", property = model.hasRectalPain)
+//                    gridpaneConstraints {
+//                        columnRowIndex(0, 1)
+//                        columnSpan = 1
+//                    }
+//                }
+//                field {
+//                    checkbox(text = "Severe vomiting", property = model.hasSevereVomiting)
+//                    gridpaneConstraints {
+//                        columnRowIndex(1, 1)
+//                        marginLeft = 5.0
+//                        columnSpan = 1
+//                    }
+//                }
+//                field {
+//                    checkbox(text = "Seizures", property = model.hasSeizures)
+//                    gridpaneConstraints {
+//                        columnRowIndex(2, 1)
+//                        marginLeft = 5.0
+//                        columnSpan = 1
+//                    }
+//                }
+                field {
+                    checkbox(text = "Lethargic", property = model.hasLethargic)
+                    gridpaneConstraints {
+                        columnRowIndex(0, 1)
+                        marginLeft = 5.0
+                        columnSpan = 1
+                    }
+                }
+                field {
+                    checkbox(text = "Weak pulse", property = model.hasWeakPulse)
+                    gridpaneConstraints {
+                        columnRowIndex(1, 1)
+                        marginLeft = 5.0
+                        columnSpan = 1
+                    }
+                }
+                field {
+                    checkbox(text = "Sunken eyes", property = model.hasSunkenEyes)
+                    gridpaneConstraints {
+                        columnRowIndex(2, 1)
+                        marginLeft = 5.0
+                        columnSpan = 1
+                    }
+                }
+                field {
+                    checkbox(text = "Drinks poorly", property = model.hasDrinksPoorly)
+                    gridpaneConstraints {
+                        columnRowIndex(0, 2)
+                        marginLeft = 5.0
+                        columnSpan = 1
+                    }
+                }
+//                field {
+//                    checkbox(text = "Fever", property = model.hasFever)
+//                    gridpaneConstraints {
+//                        columnRowIndex(2, 3)
+//                        marginLeft = 5.0
+//                        columnSpan = 1
+//                    }
+//                }
+                field {
+                    checkbox(text = "Skin pinch goes back very slowly", property = model.hasSkinPinchGoesBackVerySlowly)
+                    gridpaneConstraints {
+                        columnRowIndex(1, 2)
+                        marginLeft = 5.0
+                        columnSpan = 1
+                    }
+                }
+                field {
+                    checkbox(text = "Irritable", property = model.isIrritable)
+                    gridpaneConstraints {
+                        columnRowIndex(2, 2)
+                        marginLeft = 5.0
+                        columnSpan = 1
+                    }
+                }
+                field {
+                    checkbox(text = "Rapid pulse", property = model.hasRapidPulse)
+                    gridpaneConstraints {
+                        columnRowIndex(0, 3)
+                        marginLeft = 5.0
+                        columnSpan = 1
+                    }
+                }
+                field {
+                    checkbox(text = "Thirsty", property = model.isThirsty)
+                    gridpaneConstraints {
+                        columnRowIndex(1, 3)
+                        marginLeft = 5.0
+                        columnSpan = 1
+                    }
+                }
+                field {
+                    checkbox(text = "Skin pinch goes back slowly", property = model.hasSkinPinchGoesBackSlowly)
+                    gridpaneConstraints {
+                        columnRowIndex(2, 3)
+                        marginLeft = 5.0
+                        columnSpan = 1
+                    }
+                }
+            }
+        }
+        fieldset("Diagnosis:") {
+            field {
+                textarea(property = diagnosis){
+                    isWrapText = true
+                    isEditable = false
+                }
+            }
+        }
+        buttonbar {
+            button("Analyze") {
+                isDefaultButton = true
+                enableWhen { model.valid }
+                action {
+                    diagnosis.value = controller.analyze(model.patient)
+                }
+            }
+            button("Reset") {
+                enableWhen { model.dirty }
+                action {
+                    model.rollback()
+                    diagnosis.value = ""
+                }
+            }
         }
     }
 }
