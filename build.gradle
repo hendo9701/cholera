@@ -16,6 +16,8 @@ dependencies {
     compile group: 'jpl', name: 'jpl', version: '7.4.0'
     compile group: 'org.projog', name: 'projog-core', version: '0.2.1'
     compile group: 'com.jfoenix', name: 'jfoenix', version: '8.0.1'
+    compile group: 'de.jensd', name: 'fontawesomefx', version: '8.2'
+
 }
 
 application {
