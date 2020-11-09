@@ -13,6 +13,7 @@ class MainView : View("Cholera diagnosis") {
     val controller: PatientController by inject()
     val model: PatientModel = PatientModel(Patient())
     val diagnosis = SimpleStringProperty()
+    val status: TaskStatus by inject()
 
     override val root = form {
         fieldset("Personal info:", labelPosition = Orientation.VERTICAL) {
@@ -173,18 +174,28 @@ class MainView : View("Cholera diagnosis") {
         }
         fieldset("Diagnosis:") {
             field {
-                textarea(property = diagnosis){
+                textarea(property = diagnosis) {
                     isWrapText = true
                     isEditable = false
                 }
             }
         }
         buttonbar {
+            label("Analyzing") {
+                visibleWhen { status.running }
+            }
+            progressbar {
+                visibleWhen { status.running }
+                progressProperty().bind(status.progress)
+            }
             button("Analyze") {
                 isDefaultButton = true
                 enableWhen { model.valid }
                 action {
-                    diagnosis.value = controller.analyze(model.patient)
+                    model.commit()
+                    runAsync(status) {
+                        diagnosis.value = controller.analyze(model.patient)
+                    }
                 }
             }
             button("Reset") {
