@@ -14,6 +14,7 @@ dependencies {
     testImplementation 'org.jetbrains.kotlin:kotlin-test-junit'
     compile "no.tornado:tornadofx:1.7.17"
     compile group: 'jpl', name: 'jpl', version: '7.4.0'
+    compile group: 'org.projog', name: 'projog-core', version: '0.2.1'
     compile group: 'com.jfoenix', name: 'jfoenix', version: '8.0.1'
 }
 
@@ -34,4 +35,8 @@ jar {
         exclude "META-INF/*.DSA"
         exclude "META-INF/*.RSA"
     }
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
 }
