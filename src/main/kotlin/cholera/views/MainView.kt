@@ -6,6 +6,7 @@ import cholera.model.PatientModel
 import javafx.application.Platform
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Orientation
+import javafx.scene.image.Image
 import tornadofx.*
 
 class MainView : View("Cholera diagnosis") {
@@ -13,6 +14,10 @@ class MainView : View("Cholera diagnosis") {
     val controller: PatientController by inject()
     val model: PatientModel = PatientModel(Patient())
     val status: TaskStatus by inject()
+
+    init{
+        setStageIcon(Image(javaClass.getResourceAsStream("/cholera.png")))
+    }
 
     override val root = form {
         fieldset("Personal info:", labelPosition = Orientation.VERTICAL) {
