@@ -2,16 +2,15 @@
 % at https://www.cdc.gov/cholera
 
 disease(Patient, cholera) :-
-    symptom(Patient, diarrhea),
-    symptom(Patient, rice_water_stools),
-    symptom(Patient, dehydration);
-    (
-        symptom(Patient, abdominal_pain);
-        symptom(Patient, rectal_pain);
-        symptom(Patient, fever);
-        symptom(Patient, severe_vomiting);
-        symptom(Patient, seizures)
-    ).
+    symptom(Patient, dehydration),
+    symptom(Patient, rice_water_stools).
+%    (
+%        symptom(Patient, abdominal_pain);
+%        symptom(Patient, rectal_pain);
+%        symptom(Patient, fever);
+%       symptom(Patient, severe_vomiting);
+%       symptom(Patient, seizures)
+%  ).
 
 symptom(Patient, dehydration) :-
     symptom(Patient, mild_dehydration);
