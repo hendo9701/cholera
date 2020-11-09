@@ -12,7 +12,6 @@ class MainView : View("Cholera diagnosis") {
 
     val controller: PatientController by inject()
     val model: PatientModel = PatientModel(Patient())
-    val diagnosis = SimpleStringProperty()
     val status: TaskStatus by inject()
 
     override val root = form {
@@ -59,37 +58,6 @@ class MainView : View("Cholera diagnosis") {
                         columnSpan = 1
                     }
                 }
-//                field {
-//                    checkbox(text = "Abdominal pain", property = model.hasAbdominalPain)
-//                    gridpaneConstraints {
-//                        columnRowIndex(2, 0)
-//                        marginLeft = 5.0
-//                        columnSpan = 1
-//                    }
-//                }
-//                field {
-//                    checkbox(text = "Rectal pain", property = model.hasRectalPain)
-//                    gridpaneConstraints {
-//                        columnRowIndex(0, 1)
-//                        columnSpan = 1
-//                    }
-//                }
-//                field {
-//                    checkbox(text = "Severe vomiting", property = model.hasSevereVomiting)
-//                    gridpaneConstraints {
-//                        columnRowIndex(1, 1)
-//                        marginLeft = 5.0
-//                        columnSpan = 1
-//                    }
-//                }
-//                field {
-//                    checkbox(text = "Seizures", property = model.hasSeizures)
-//                    gridpaneConstraints {
-//                        columnRowIndex(2, 1)
-//                        marginLeft = 5.0
-//                        columnSpan = 1
-//                    }
-//                }
                 field {
                     checkbox(text = "Lethargic", property = model.hasLethargic)
                     gridpaneConstraints {
@@ -122,14 +90,6 @@ class MainView : View("Cholera diagnosis") {
                         columnSpan = 1
                     }
                 }
-//                field {
-//                    checkbox(text = "Fever", property = model.hasFever)
-//                    gridpaneConstraints {
-//                        columnRowIndex(2, 3)
-//                        marginLeft = 5.0
-//                        columnSpan = 1
-//                    }
-//                }
                 field {
                     checkbox(text = "Skin pinch goes back very slowly", property = model.hasSkinPinchGoesBackVerySlowly)
                     gridpaneConstraints {
@@ -174,7 +134,7 @@ class MainView : View("Cholera diagnosis") {
         }
         fieldset("Diagnosis:") {
             field {
-                textarea(property = diagnosis) {
+                textarea(model.diagnosis) {
                     isWrapText = true
                     isEditable = false
                 }
@@ -194,7 +154,7 @@ class MainView : View("Cholera diagnosis") {
                 action {
                     model.commit()
                     runAsync(status) {
-                        diagnosis.value = controller.analyze(model.patient)
+                        model.diagnosis.value = controller.analyze(model.patient)
                     }
                 }
             }
@@ -202,7 +162,6 @@ class MainView : View("Cholera diagnosis") {
                 enableWhen { model.dirty }
                 action {
                     model.rollback()
-                    diagnosis.value = ""
                 }
             }
         }

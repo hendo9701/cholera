@@ -18,7 +18,8 @@ class Patient(
         isIrritable: Boolean = false,
         hasRapidPulse: Boolean = false,
         isThirsty: Boolean = false,
-        hasSkinPinchGoesBackSlowly: Boolean = false
+        hasSkinPinchGoesBackSlowly: Boolean = false,
+        diagnosis: String = ""
 ) {
     val nameProperty = SimpleStringProperty(this, "name", name)
     var name by nameProperty
@@ -48,6 +49,8 @@ class Patient(
     var isThirsty by isThirstyProperty
     val hasSkinPinchGoesBackSlowlyProperty = SimpleBooleanProperty(this, "hasSkinPinchGoesBackSlowly", hasSkinPinchGoesBackSlowly)
     var hasSkinPinchGoesBackSlowly by hasSkinPinchGoesBackSlowlyProperty
+    val diagnosisProperty = SimpleStringProperty(this, "diagnosis", diagnosis)
+    var diagnosis by diagnosisProperty
 
     fun getSimplifiedName(): String {
         return name.toLowerCase().split(" ").joinToString(separator = "_")

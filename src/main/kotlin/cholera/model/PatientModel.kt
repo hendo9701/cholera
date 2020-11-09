@@ -17,4 +17,5 @@ class PatientModel(var patient: Patient) : ViewModel() {
     val hasRapidPulse = bind { patient.hasRapidPulseProperty }
     val isThirsty = bind { patient.isThirstyProperty }
     val hasSkinPinchGoesBackSlowly = bind { patient.hasSkinPinchGoesBackSlowlyProperty }
+    val diagnosis = bind { patient.diagnosisProperty }
 }
