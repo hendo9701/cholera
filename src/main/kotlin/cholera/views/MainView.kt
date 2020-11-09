@@ -3,9 +3,13 @@ package cholera.views
 import cholera.controller.PatientController
 import cholera.model.Patient
 import cholera.model.PatientModel
+import cholera.styles.*
+import cholera.util.makeIcon
+import com.jfoenix.controls.JFXButton.*
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcons
 import javafx.application.Platform
-import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Orientation
+import javafx.scene.control.Tooltip
 import javafx.scene.image.Image
 import tornadofx.*
 
@@ -14,15 +18,19 @@ class MainView : View("Cholera diagnosis") {
     val controller: PatientController by inject()
     val model: PatientModel = PatientModel(Patient())
     val status: TaskStatus by inject()
+    val diagnosis = jfxtextarea {
+        isWrapText = true
+        isEditable = false
+    }
 
-    init{
+    init {
         setStageIcon(Image(javaClass.getResourceAsStream("/cholera.png")))
     }
 
     override val root = form {
         fieldset("Personal info:", labelPosition = Orientation.VERTICAL) {
             field("Name") {
-                textfield(model.name) {
+                jfxtextfield(model.name) {
                     promptText = "Enter patient name"
                     validator {
                         if (it.isNullOrBlank()) error("Name is required") else null
@@ -30,7 +38,7 @@ class MainView : View("Cholera diagnosis") {
                 }
             }
             field("Age") {
-                textfield(model.age) {
+                jfxtextfield(model.age) {
                     promptText = "Enter patient age"
                     filterInput { it.controlNewText.isInt() }
                     validator { if (it.isNullOrBlank()) error("Age is required") else null }
@@ -40,7 +48,7 @@ class MainView : View("Cholera diagnosis") {
         fieldset("Symptoms:") {
             gridpane {
                 field {
-                    checkbox(text = "Diarrhea", property = model.hasDiarrhea)
+                    jfxcheckbox(text = "Diarrhea", property = model.hasDiarrhea)
                     gridpaneConstraints {
                         columnRowIndex(0, 0)
                         marginLeft = 5.0
@@ -48,7 +56,7 @@ class MainView : View("Cholera diagnosis") {
                     }
                 }
                 field {
-                    checkbox(text = "Rice water stools", property = model.hasRiceWaterStools)
+                    jfxcheckbox(text = "Rice water stools", property = model.hasRiceWaterStools)
                     gridpaneConstraints {
                         columnRowIndex(1, 0)
                         marginLeft = 5.0
@@ -56,7 +64,7 @@ class MainView : View("Cholera diagnosis") {
                     }
                 }
                 field {
-                    checkbox(text = "Respiratory distress", property = model.hasRespiratoryDistress)
+                    jfxcheckbox(text = "Respiratory distress", property = model.hasRespiratoryDistress)
                     gridpaneConstraints {
                         columnRowIndex(2, 0)
                         marginLeft = 5.0
@@ -64,7 +72,7 @@ class MainView : View("Cholera diagnosis") {
                     }
                 }
                 field {
-                    checkbox(text = "Lethargic", property = model.hasLethargic)
+                    jfxcheckbox(text = "Lethargic", property = model.hasLethargic)
                     gridpaneConstraints {
                         columnRowIndex(0, 1)
                         marginLeft = 5.0
@@ -72,7 +80,7 @@ class MainView : View("Cholera diagnosis") {
                     }
                 }
                 field {
-                    checkbox(text = "Weak pulse", property = model.hasWeakPulse)
+                    jfxcheckbox(text = "Weak pulse", property = model.hasWeakPulse)
                     gridpaneConstraints {
                         columnRowIndex(1, 1)
                         marginLeft = 5.0
@@ -80,7 +88,7 @@ class MainView : View("Cholera diagnosis") {
                     }
                 }
                 field {
-                    checkbox(text = "Sunken eyes", property = model.hasSunkenEyes)
+                    jfxcheckbox(text = "Sunken eyes", property = model.hasSunkenEyes)
                     gridpaneConstraints {
                         columnRowIndex(2, 1)
                         marginLeft = 5.0
@@ -88,7 +96,7 @@ class MainView : View("Cholera diagnosis") {
                     }
                 }
                 field {
-                    checkbox(text = "Drinks poorly", property = model.hasDrinksPoorly)
+                    jfxcheckbox(text = "Drinks poorly", property = model.hasDrinksPoorly)
                     gridpaneConstraints {
                         columnRowIndex(0, 2)
                         marginLeft = 5.0
@@ -96,7 +104,7 @@ class MainView : View("Cholera diagnosis") {
                     }
                 }
                 field {
-                    checkbox(text = "Skin pinch goes back very slowly", property = model.hasSkinPinchGoesBackVerySlowly)
+                    jfxcheckbox(text = "Skin pinch goes back very slowly", property = model.hasSkinPinchGoesBackVerySlowly)
                     gridpaneConstraints {
                         columnRowIndex(1, 2)
                         marginLeft = 5.0
@@ -104,7 +112,7 @@ class MainView : View("Cholera diagnosis") {
                     }
                 }
                 field {
-                    checkbox(text = "Irritable", property = model.isIrritable)
+                    jfxcheckbox(text = "Irritable", property = model.isIrritable)
                     gridpaneConstraints {
                         columnRowIndex(2, 2)
                         marginLeft = 5.0
@@ -112,7 +120,7 @@ class MainView : View("Cholera diagnosis") {
                     }
                 }
                 field {
-                    checkbox(text = "Rapid pulse", property = model.hasRapidPulse)
+                    jfxcheckbox(text = "Rapid pulse", property = model.hasRapidPulse)
                     gridpaneConstraints {
                         columnRowIndex(0, 3)
                         marginLeft = 5.0
@@ -120,7 +128,7 @@ class MainView : View("Cholera diagnosis") {
                     }
                 }
                 field {
-                    checkbox(text = "Thirsty", property = model.isThirsty)
+                    jfxcheckbox(text = "Thirsty", property = model.isThirsty)
                     gridpaneConstraints {
                         columnRowIndex(1, 3)
                         marginLeft = 5.0
@@ -128,7 +136,7 @@ class MainView : View("Cholera diagnosis") {
                     }
                 }
                 field {
-                    checkbox(text = "Skin pinch goes back slowly", property = model.hasSkinPinchGoesBackSlowly)
+                    jfxcheckbox(text = "Skin pinch goes back slowly", property = model.hasSkinPinchGoesBackSlowly)
                     gridpaneConstraints {
                         columnRowIndex(2, 3)
                         marginLeft = 5.0
@@ -139,34 +147,43 @@ class MainView : View("Cholera diagnosis") {
         }
         fieldset("Diagnosis:") {
             field {
-                textarea(model.diagnosis) {
-                    isWrapText = true
-                    isEditable = false
-                }
+                this += diagnosis
             }
         }
         buttonbar {
-            label("Analyzing") {
-                visibleWhen { status.running }
-            }
-            progressbar {
+            jfxprogressbar {
                 visibleWhen { status.running }
                 progressProperty().bind(status.progress)
+                prefWidth = 100.0
+                addClass(Styles.PROGRESS_BAR)
             }
-            button("Analyze") {
+            jfxbutton {
                 isDefaultButton = true
+                buttonType = ButtonType.RAISED
+                graphic = makeIcon(FontAwesomeIcons.SEARCH)
+                tooltip = Tooltip("Query")
                 enableWhen { model.valid }
                 action {
                     model.commit()
+                    var result = ""
                     runAsync(status) {
-                        model.diagnosis.value = controller.analyze(model.patient)
+                        result = controller.analyze(model.patient)
+                    }.setOnSucceeded {
+                        Platform.runLater {
+                            diagnosis.text = result
+                        }
                     }
                 }
             }
-            button("Reset") {
+            jfxbutton {
+                isCancelButton = true
+                buttonType = ButtonType.RAISED
+                graphic = makeIcon(FontAwesomeIcons.REFRESH)
+                tooltip("Refresh")
                 enableWhen { model.dirty }
                 action {
                     model.rollback()
+                    diagnosis.clear()
                 }
             }
         }
