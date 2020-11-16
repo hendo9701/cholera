@@ -4,13 +4,6 @@
 disease(Patient, cholera) :-
     symptom(Patient, dehydration),
     symptom(Patient, rice_water_stools).
-%    (
-%        symptom(Patient, abdominal_pain);
-%        symptom(Patient, rectal_pain);
-%        symptom(Patient, fever);
-%       symptom(Patient, severe_vomiting);
-%       symptom(Patient, seizures)
-%  ).
 
 symptom(Patient, dehydration) :-
     symptom(Patient, mild_dehydration);
