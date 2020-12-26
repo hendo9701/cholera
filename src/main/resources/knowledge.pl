@@ -35,6 +35,7 @@ symptom(Patient, severe_dehydration) :-
     (
         symptom(Patient, drinks_poorly);
         symptom(Patient, sunken_eyes)
+
     ).
 
 symptom(Patient, moderate_dehydration) :-
